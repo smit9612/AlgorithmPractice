@@ -7,30 +7,40 @@ extension BinaryInteger {
     }
 }
 
+func doSum(_ a: Int, _ b: Int, _ carryOver: Int) -> (Int, Int) {
+    
+    var sum = a + b  + carryOver
+    var carryOver = 0
+    if sum > 9 {
+        sum = sum % 10
+        carryOver = 1
+    }
+    return (sum, carryOver)
+}
+
 func add(_ arrayA: [Int], _ countA: Int, _ arrayB: [Int], _ countB: Int) -> [Int] {
     var resultArray : [Int] = []
     var i = countA, j = countB
     var carryOver = 0
     while j >= 0 {
-        var sum = arrayA[i] + arrayB[j] + carryOver
-        if sum > 9 {
-            sum = sum % 10
-            carryOver = 1
-        } else {
-            carryOver = 0
-        }
+        let sumInfo: (Int, Int) = doSum(arrayA[i], arrayB[j], carryOver)
+        carryOver = sumInfo.1
         i -= 1
         j -= 1
-        resultArray.insert(sum, at: 0)
+        resultArray.insert(sumInfo.0, at: 0)
     }
     
     if i >= 0 {
         while i >= 0 {
-            
-            resultArray.insert(arrayA[i]+carryOver, at: 0)
-            carryOver = 0
+            let sumInfo: (Int, Int) = doSum(arrayA[i], 0, carryOver)
+            resultArray.insert(sumInfo.0, at: 0)
+            carryOver = sumInfo.1
             i -= 1
         }
+    }
+    
+    if carryOver == 1 {
+        resultArray.insert(1, at: 0)
     }
     return resultArray
 }
@@ -43,7 +53,7 @@ func add(_ arrayA: [Int], _ countA: Int, _ arrayB: [Int], _ countB: Int) -> [Int
 //
 //}
 
-let a = 1
+let a = 99
 let b = 9999
 
 let arrayA = a.arrayOfDigit
