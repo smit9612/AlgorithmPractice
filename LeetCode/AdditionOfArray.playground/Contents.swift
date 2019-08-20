@@ -10,15 +10,15 @@ extension BinaryInteger {
 func add(_ arrayA: [Int], _ countA: Int, _ arrayB: [Int], _ countB: Int) -> [Int] {
     var resultArray : [Int] = []
     var i = countA, j = countB
-    
+    var carryOver = 0
     while j >= 0 {
-        var carryOver = 0
-        var sum = arrayA[i] + arrayB[j]
-        if sum > 10 {
+        var sum = arrayA[i] + arrayB[j] + carryOver
+        if sum > 9 {
             sum = sum % 10
             carryOver = 1
+        } else {
+            carryOver = 0
         }
-        sum += carryOver
         i -= 1
         j -= 1
         resultArray.insert(sum, at: 0)
@@ -26,7 +26,9 @@ func add(_ arrayA: [Int], _ countA: Int, _ arrayB: [Int], _ countB: Int) -> [Int
     
     if i >= 0 {
         while i >= 0 {
-            resultArray.insert(arrayA[i], at: 0)
+            
+            resultArray.insert(arrayA[i]+carryOver, at: 0)
+            carryOver = 0
             i -= 1
         }
     }
@@ -34,15 +36,15 @@ func add(_ arrayA: [Int], _ countA: Int, _ arrayB: [Int], _ countB: Int) -> [Int
 }
 
 //func subtract(_ arrayA: [Int], _ countA: Int, _ arrayB: [Int], _ countB: Int) -> [Int] {
-//    
+//
 //}
 //
 //func multiply(_ arrayA: [Int], _ countA: Int, _ arrayB: [Int], _ countB: Int) -> [Int] {
-//    
+//
 //}
 
 let a = 1
-let b = 1234
+let b = 9999
 
 let arrayA = a.arrayOfDigit
 let arrayB = b.arrayOfDigit
